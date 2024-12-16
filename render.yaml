@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: automarket
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./out
+    buildFilter:
+      paths:
+        - app/**/*.{js,jsx,ts,tsx}
+        - components/**/*.{js,jsx,ts,tsx}
+        - lib/**/*.{js,jsx,ts,tsx}
+        - public/**/*
+        - styles/**/*.{css,scss}
+        - package.json
+        - next.config.js
+        - tsconfig.json
+        - tailwind.config.ts
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    autoDeploy: true
+    buildCache:
+      enabled: true
+      paths:
+        - node_modules/**/*
+        - .next/cache/**/*
